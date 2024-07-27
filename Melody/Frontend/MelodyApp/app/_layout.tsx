@@ -6,7 +6,6 @@ import { FIREBASE_AUTH } from "../firebaseConfig"; // Correct import
 import Login from "./screens/Login";
 import Home from "./screens/Home"; // Create a Home screen to navigate to after login
 import Profile from "./screens/Profile"; // Create a Profile screen to navigate to after login
-import { NavigationContainer } from "@react-navigation/native";
 
 //stack navigators
 const Stack = createNativeStackNavigator();
