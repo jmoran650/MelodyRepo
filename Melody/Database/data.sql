@@ -1,4 +1,4 @@
-CREATE TABLE Users (
+CREATE TABLE User (
   userId INT PRIMARY KEY,
   userName VARCHAR(10),
   userPassword VARCHAR(10)
@@ -19,7 +19,8 @@ CREATE TABLE Posts (
 
 INSERT INTO Users (userId, userName, userPassword) VALUES (1, 'Jibbum', 'Jibbum');
 INSERT INTO Users (userId, userName, userPassword) VALUES (2, 'Michael', 'Michael');
+INSERT INTO Users (userId, userName, userPassword) VALUES (3, 'Hafez', 'Hafez');
 
 INSERT INTO Friends (userid1, userid2, friendshipStatus) VALUES (1, 2, 'ACCEPTED');
 
-INSERT INTO Posts (postID, userID, postType, postContent) VALUES (3, 1, 'Scent', 'Blah');
+INSERT INTO Posts (postID, userID, postType, postContent) VALUES (650, 1, 'Scent', 'Blah');
