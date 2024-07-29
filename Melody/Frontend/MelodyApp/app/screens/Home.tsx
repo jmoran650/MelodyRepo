@@ -20,10 +20,8 @@ type User = {
   name: string;
 };
 
-
-
 const Home = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const handleSignOut = async () => {
     try {
@@ -39,21 +37,25 @@ const Home = () => {
   }, []);
 
   const fetchUsers = async () => {
+    try {
       const users = await getUsers();
       setUsers(users);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text>Welcome to the Home Screen!</Text>
       <Button title="Sign Out" onPress={handleSignOut} />
-      <Button title="Get Users" onPress={getUsers} />
+      <Button title="Get Users" onPress={fetchUsers} />
 
-      <FlatList data = {users}
-      renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
-      >
-
-      </FlatList>
+      <FlatList
+        data={users}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+      />
     </View>
   );
 };
