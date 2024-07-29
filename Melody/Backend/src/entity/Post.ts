@@ -10,7 +10,10 @@ export class Post {
     type: "enum",
     enum: PostType
   })
-  type!: PostType;
+  type!: string;
+
+  @Column()
+  userId!: number;
 
   // other columns...
 }

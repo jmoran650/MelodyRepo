@@ -7,6 +7,7 @@ CREATE TABLE User (
 CREATE TABLE Friends (
   userid1 INT REFERENCES Users(userId),
   userid2 INT REFERENCES Users(userId),
+  PRIMARY KEY (userid1, userid2),
   friendshipStatus VARCHAR(10)
 );
 
@@ -17,9 +18,9 @@ CREATE TABLE Posts (
   postContent VARCHAR(10)
 );
 
-INSERT INTO Users (userId, userName, userPassword) VALUES (1, 'Jibbum', 'Jibbum');
-INSERT INTO Users (userId, userName, userPassword) VALUES (2, 'Michael', 'Michael');
-INSERT INTO Users (userId, userName, userPassword) VALUES (3, 'Hafez', 'Hafez');
+INSERT INTO User (userId, userName, userPassword) VALUES (1, 'Jibbum', 'Jibbum');
+INSERT INTO User (userId, userName, userPassword) VALUES (2, 'Michael', 'Michael');
+INSERT INTO User (userId, userName, userPassword) VALUES (3, 'Hafez', 'Hafez');
 
 INSERT INTO Friends (userid1, userid2, friendshipStatus) VALUES (1, 2, 'ACCEPTED');
 

@@ -8,7 +8,8 @@ export const getUsers = async () => {
     return response.data;
 };
 
-export const createUser = async (user: { firstName: string; lastName: string; age: number }) => {
+export const createUser = async (user: { id: number; name: string; email: string }) => {
     const response = await axios.post(`${API_URL}/users`, user);
     return response.data;
 };
+
