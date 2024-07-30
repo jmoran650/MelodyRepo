@@ -3,14 +3,17 @@ import { statusType } from "../types/friendType";
 
 @Entity()
 export class Friend {
-  @Column("uuid")
+  @PrimaryColumn("uuid")
   requesterId!: string;
 
-  @Column("uuid")
+  @PrimaryColumn("uuid")
   receiverId!: string;
 
-  @Column()
-  status!: typeof statusType;
+  @Column({
+    type: "enum",
+    enum: statusType,
+    default: statusType.PENDING,
+  })
+  status!: statusType;
 
-  // other columns...
 }

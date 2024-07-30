@@ -35,9 +35,9 @@ myDataSource.initialize()
             // Insert a new user
             const newUser = new User();
 
-            newUser.id = 123456
-            newUser.name = "John";
-            newUser.email = "john@email.com";
+            newUser.userId = '123456';
+            newUser.userName = "John";
+            newUser.userEmail = "john@email.com";
             await userRepository.save(newUser);
             console.log("New user has been saved:", newUser);
 

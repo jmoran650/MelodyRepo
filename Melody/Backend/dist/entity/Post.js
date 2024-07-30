@@ -26,6 +26,10 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Post.prototype, "type", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Post.prototype, "userId", void 0);
 exports.Post = Post = __decorate([
     (0, typeorm_1.Entity)()
 ], Post);

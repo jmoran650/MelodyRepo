@@ -40,9 +40,9 @@ myDataSource.initialize()
         const userRepository = myDataSource.getRepository(User_1.User);
         // Insert a new user
         const newUser = new User_1.User();
-        newUser.id = 123456;
-        newUser.name = "John";
-        newUser.email = "john@email.com";
+        newUser.userId = '123456';
+        newUser.userName = "John";
+        newUser.userEmail = "john@email.com";
         yield userRepository.save(newUser);
         console.log("New user has been saved:", newUser);
         // Fetch all users

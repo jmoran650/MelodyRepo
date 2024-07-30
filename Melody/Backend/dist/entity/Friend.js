@@ -8,24 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Friend = void 0;
 const typeorm_1 = require("typeorm");
+const friendType_1 = require("../types/friendType");
 let Friend = class Friend {
 };
 exports.Friend = Friend;
 __decorate([
     (0, typeorm_1.PrimaryColumn)("uuid"),
     __metadata("design:type", String)
-], Friend.prototype, "friendshipId", void 0);
+], Friend.prototype, "requesterId", void 0);
+__decorate([
+    (0, typeorm_1.PrimaryColumn)("uuid"),
+    __metadata("design:type", String)
+], Friend.prototype, "receiverId", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: "enum",
-        enum: PostType
+        enum: friendType_1.statusType,
+        default: friendType_1.statusType.PENDING,
     }),
-    __metadata("design:type", typeof (_a = typeof PostType !== "undefined" && PostType) === "function" ? _a : Object)
-], Friend.prototype, "type", void 0);
+    __metadata("design:type", String)
+], Friend.prototype, "status", void 0);
 exports.Friend = Friend = __decorate([
     (0, typeorm_1.Entity)()
 ], Friend);
