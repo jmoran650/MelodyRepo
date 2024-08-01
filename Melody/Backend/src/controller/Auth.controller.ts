@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
 import { MelodyDataSource } from "../data-source";
 import { User } from "../entity/User.entity";
-import { encrypt } from "../helpers/encrypt";
+import { encrypt } from "../helpers/helpers";
+
+
+interface AuthenticatedRequest extends Request {
+    currentUser?: {
+      id: string;
+      role: string;
+    };
+  }
 
 export class AuthController {
   static async login(req: Request, res: Response) {
@@ -14,13 +22,14 @@ export class AuthController {
       }
 
       const userRepository = MelodyDataSource.getRepository(User);
-      const user = await userRepository.findOne({ where: { email } });
+      const user: User | null = await userRepository.findOne({ where: { email } });
+      const isPasswordValid = encrypt.comparepassword(user!.password, password);
 
-      const isPasswordValid = encrypt.comparepassword(user.password, password);
       if (!user || !isPasswordValid) {
         return res.status(404).json({ message: "User not found" });
       }
-      const token = encrypt.generateToken({ id: user.id });
+
+      const token = encrypt.generateToken({ id: user.id, role: user.role });
 
       return res.status(200).json({ message: "Login successful", user, token });
     } catch (error) {
@@ -29,13 +38,13 @@ export class AuthController {
     }
   }
 
-  static async getProfile(req: Request, res: Response) {
-    if (!req[" currentUser"]) {
+  static async getProfile(req: AuthenticatedRequest, res: Response) {
+    if (!req.currentUser) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = MelodyDataSource.getRepository(User);
     const user = await userRepository.findOne({
-      where: { id: req[" currentUser"].id },
+      where: { id: req.currentUser.id },
     });
     return res.status(200).json({ ...user, password: undefined });
   }
