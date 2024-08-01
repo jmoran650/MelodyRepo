@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
-const data_source_1 = require("./data-source");
-data_source_1.MelodyDataSource.initialize()
+const dataSource_1 = require("./dataSource");
+dataSource_1.MelodyDataSource.initialize()
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Data Source has been initialized!");
     // Demonstrate connection by performing a simple insert and query

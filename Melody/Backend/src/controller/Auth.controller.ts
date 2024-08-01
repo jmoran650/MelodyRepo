@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MelodyDataSource } from "../data-source";
+import { MelodyDataSource } from "../dataSource";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../helpers/helpers";
 

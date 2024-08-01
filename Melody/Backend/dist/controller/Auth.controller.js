@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
-const data_source_1 = require("../data-source");
+const dataSource_1 = require("../dataSource");
 const User_entity_1 = require("../entity/User.entity");
 const helpers_1 = require("../helpers/helpers");
 class AuthController {
@@ -23,7 +23,7 @@ class AuthController {
                         .status(500)
                         .json({ message: " email and password required" });
                 }
-                const userRepository = data_source_1.MelodyDataSource.getRepository(User_entity_1.User);
+                const userRepository = dataSource_1.MelodyDataSource.getRepository(User_entity_1.User);
                 const user = yield userRepository.findOne({ where: { email } });
                 const isPasswordValid = helpers_1.encrypt.comparepassword(user.password, password);
                 if (!user || !isPasswordValid) {
@@ -43,7 +43,7 @@ class AuthController {
             if (!req.currentUser) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
-            const userRepository = data_source_1.MelodyDataSource.getRepository(User_entity_1.User);
+            const userRepository = dataSource_1.MelodyDataSource.getRepository(User_entity_1.User);
             const user = yield userRepository.findOne({
                 where: { id: req.currentUser.id },
             });
