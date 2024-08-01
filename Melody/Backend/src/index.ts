@@ -1,24 +1,16 @@
 import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { User } from "./entity/User"
+
+
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+import { MelodyDataSource } from "./data-source";
 
 
-const myDataSource = new DataSource({
-    type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "MelodyAdmin",
-    password: "MelodyZaza1234",
-    database: "Melody-DataBase",
-    synchronize: true,
-    logging: true,
-    entities: [User],
-})
-
-myDataSource.initialize()
+    MelodyDataSource.initialize()
     .then(async () => {
         console.log("Data Source has been initialized!");
 
@@ -28,44 +20,8 @@ myDataSource.initialize()
     
             const app = express();
             app.use(cors());
+            app.use(express.json());
             app.use(bodyParser.json());
-
-            const userRepository = myDataSource.getRepository(User);
-
-            // Insert a new user
-            const newUser = new User();
-
-            newUser.userId = '123456';
-            newUser.userName = "John";
-            newUser.userEmail = "john@email.com";
-            await userRepository.save(newUser);
-            console.log("New user has been saved:", newUser);
-
-            // Fetch all users
-            const users = await userRepository.find();
-
-                    // Endpoint to get all users
-        app.get("/users", async (req, res) => {
-            try {
-                const users = await userRepository.find();
-                res.json(users);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-                res.status(500).send("Internal Server Error");
-            }
-        });
-
-        // Endpoint to add a new user
-        app.post("/users", async (req, res) => {
-            try {
-                const newUser = userRepository.create(req.body);
-                const result = await userRepository.save(newUser);
-                res.json(result);
-            } catch (error) {
-                console.error("Error saving user:", error);
-                res.status(500).send("Internal Server Error");
-            }
-        });
 
         const port = 3000;
         app.listen(port, () => {
