@@ -11,9 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const data_source_1 = require("../data-source");
-const User_entity_ts_1 = require("../entity/User.entity.ts");
-Melody / Backend / src / entity / User_entity_ts_1.User.entity.ts;
-const encrypt_1 = require("../helpers/encrypt");
+const User_entity_1 = require("../entity/User.entity");
+const helpers_1 = require("../helpers/helpers");
 class AuthController {
     static login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -24,13 +23,13 @@ class AuthController {
                         .status(500)
                         .json({ message: " email and password required" });
                 }
-                const userRepository = data_source_1.AppDataSource.getRepository(User_entity_ts_1.User);
+                const userRepository = data_source_1.MelodyDataSource.getRepository(User_entity_1.User);
                 const user = yield userRepository.findOne({ where: { email } });
-                const isPasswordValid = encrypt_1.encrypt.comparepassword(user.password, password);
+                const isPasswordValid = helpers_1.encrypt.comparepassword(user.password, password);
                 if (!user || !isPasswordValid) {
                     return res.status(404).json({ message: "User not found" });
                 }
-                const token = encrypt_1.encrypt.generateToken({ id: user.id });
+                const token = helpers_1.encrypt.generateToken({ id: user.id, role: user.role });
                 return res.status(200).json({ message: "Login successful", user, token });
             }
             catch (error) {
@@ -41,12 +40,12 @@ class AuthController {
     }
     static getProfile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!req[" currentUser"]) {
+            if (!req.currentUser) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
-            const userRepository = data_source_1.AppDataSource.getRepository(User_entity_ts_1.User);
+            const userRepository = data_source_1.MelodyDataSource.getRepository(User_entity_1.User);
             const user = yield userRepository.findOne({
-                where: { id: req[" currentUser"].id },
+                where: { id: req.currentUser.id },
             });
             return res.status(200).json(Object.assign(Object.assign({}, user), { password: undefined }));
         });

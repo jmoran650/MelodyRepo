@@ -28,6 +28,9 @@ const typeorm_1 = require("typeorm");
 const User_entity_1 = require("./entity/User.entity");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
+console.log("DB_USER:", process.env.DB_USER);
+console.log("DB_PASS:", process.env.DB_PASS);
+console.log("DB_DATABASE:", process.env.DB_DATABASE);
 exports.MelodyDataSource = new typeorm_1.DataSource({
     type: "postgres",
     host: "localhost",

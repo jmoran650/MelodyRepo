@@ -1,9 +1,13 @@
+import "reflect-metadata"
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import { DataSource } from "typeorm"
 import { User } from "./entity/User.entity"
-import * as dotenv from "dotenv";
-dotenv.config();
 
+console.log("DB_USER:", process.env.DB_USER);
+console.log("DB_PASS:", process.env.DB_PASS);
+console.log("DB_DATABASE:", process.env.DB_DATABASE);
 
 export const MelodyDataSource = new DataSource({
     type: "postgres",
@@ -16,3 +20,5 @@ export const MelodyDataSource = new DataSource({
     logging: true,
     entities: [User],
 })
+
+

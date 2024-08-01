@@ -35,12 +35,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 require("reflect-metadata");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
-const dotenv = __importStar(require("dotenv"));
-dotenv.config();
 const data_source_1 = require("./data-source");
 data_source_1.MelodyDataSource.initialize()
     .then(() => __awaiter(void 0, void 0, void 0, function* () {

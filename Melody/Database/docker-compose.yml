@@ -5,14 +5,14 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: MelodyZaza1234
+      POSTGRES_PASSWORD: MelodyAdminPass
       POSTGRES_USER: MelodyAdmin
-      POSTGRES_DB: Melody-DataBase
+      POSTGRES_DB: MelodyDatabase
     ports:
       - 5432:5432
     volumes:
       - my_pgdata:/var/lib/postgresql/data
-      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+      
 
 volumes:
   my_pgdata:
