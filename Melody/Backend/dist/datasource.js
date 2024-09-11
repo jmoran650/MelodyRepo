@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MelodyDataSource = void 0;
 require("reflect-metadata");
 const dotenv = __importStar(require("dotenv"));
-dotenv.config();
+dotenv.config({ path: '/.env' });
 const typeorm_1 = require("typeorm");
 const User_entity_1 = require("./entity/User.entity");
 console.log("DB_USER:", process.env.DB_USER);
@@ -34,7 +34,7 @@ console.log("DB_PASS:", process.env.DB_PASS);
 console.log("DB_DATABASE:", process.env.DB_DATABASE);
 exports.MelodyDataSource = new typeorm_1.DataSource({
     type: "postgres",
-    host: "localhost",
+    host: "db",
     port: 5432,
     username: process.env.DB_USER,
     password: process.env.DB_PASS,

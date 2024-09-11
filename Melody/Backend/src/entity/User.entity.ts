@@ -6,6 +6,7 @@ import {
 from "typeorm";
 
 @Entity()
+
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

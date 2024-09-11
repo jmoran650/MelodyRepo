@@ -2,17 +2,18 @@ version: "3.1"
 
 services:
   db:
+    env_file:
+      - .env
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: MelodyAdminPass
-      POSTGRES_USER: MelodyAdmin
-      POSTGRES_DB: MelodyDatabase
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
       - 5432:5432
     volumes:
       - my_pgdata:/var/lib/postgresql/data
-      
 
 volumes:
   my_pgdata:

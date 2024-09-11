@@ -1,4 +1,6 @@
-
+.env*
 Melody/Backend/src/.env
 Melody/Backend/src/dist
 Melody/Backend/.env
+.env
+.gitignore
