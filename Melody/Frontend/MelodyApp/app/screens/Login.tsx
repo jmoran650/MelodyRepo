@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput, Button, Text, ActivityIndicator } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig"; // Correct import
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { logInUser, createUser  } from "./apiService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ const Login = () => {
   const signin = async () => {
     setLoading(true);
     try {
-      const signInResponse = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      const signInResponse = await logInUser({email, password});
       console.log("Signed in:", signInResponse);
     } catch (e: any) {
       setError(e.message);
@@ -24,7 +25,7 @@ const Login = () => {
   const signup = async () => {
     setLoading(true);
     try {
-      const signUpResponse = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      const signUpResponse = await createUser({ id: userId, name, email, password });
       console.log("Signed up:", signUpResponse);
     } catch (e: any) {
       setError(e.message);

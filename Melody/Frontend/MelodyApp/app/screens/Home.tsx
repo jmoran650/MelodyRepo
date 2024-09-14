@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, FlatList, Alert, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  FlatList,
+  Alert,
+  TextInput,
+} from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { getUsers, createUser } from "./apiService";
@@ -7,16 +15,27 @@ import { getUsers, createUser } from "./apiService";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 11,
+    flexDirection: 'column',
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
   },
+  userItem: {
+    padding: 10,
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  userText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 8,
@@ -24,17 +43,25 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 10,
   },
+  listContainer: {
+    flex: 1,
+  },
+  inputContainer: {
+    flexShrink: 0,
+  },
 });
 
 type User = {
   name: string;
   id: string;
   email: string;
+  password: string;
 };
 
 const Home = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
 
@@ -47,14 +74,11 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
   const fetchUsers = async () => {
     try {
       const users = await getUsers();
-      setUsers(users);
+      console.log(users);
+      setUsers(users.data);
     } catch (e) {
       console.error(e);
     }
@@ -67,10 +91,11 @@ const Home = () => {
     }
 
     try {
-      const newUser = { name, id: parseInt(id), email};
+      const newUser = { name, id: parseInt(id), email, password };
       await createUser(newUser);
       setName("");
       setEmail("");
+      setPassword("");
       setId("");
       fetchUsers();
     } catch (e) {
@@ -83,13 +108,24 @@ const Home = () => {
       <Text>Welcome to the Home Screen!</Text>
       <Button title="Sign Out" onPress={handleSignOut} />
       <Button title="Get Users" onPress={fetchUsers} />
-
+      <View style={styles.listContainer}>
+      <Text>This is where the list should be!</Text>
       <FlatList
         data={users}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text style={styles.item}>{[item.name,"--",item.id,"--",item.email]}</Text>}
+        style={{ flex: 1 }}
+        keyExtractor={(item) => item.id} // Ensure the ID is unique and a string
+        renderItem={({ item }) => (
+          <View style={styles.userItem}>
+            
+            <Text style={styles.userText}>Name: {item.name}</Text>
+            <Text style={styles.userText}>ID: {item.id}</Text>
+            <Text style={styles.userText}>Email: {item.email}</Text>
+            <Text style={styles.userText}>Password: {item.password}</Text>
+          </View>
+        )}
       />
-            <TextInput
+      </View>
+      <TextInput
         style={styles.input}
         placeholder="Name"
         value={name}
@@ -107,6 +143,12 @@ const Home = () => {
         value={id}
         onChangeText={setId}
         keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="password"
+        value={password}
+        onChangeText={setPassword}
       />
       <View style={styles.buttonContainer}>
         <Button title="Create User" onPress={handleCreateUser} />

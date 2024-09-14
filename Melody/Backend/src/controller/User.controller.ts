@@ -7,13 +7,13 @@ import * as cache from "memory-cache";
 export class UserController {
 
   static async signup(req: Request, res: Response) {
-    const { name, email, password, role } = req.body;
+    const { name, email, password} = req.body;
     const encryptedPassword = await encrypt.encryptpass(password);
     const user = new User();
     user.name = name;
     user.email = email;
     user.password = encryptedPassword;
-    user.role = role;
+    user.role = "user";
 
     const userRepository = MelodyDataSource.getRepository(User);
     await userRepository.save(user);

@@ -1,33 +1,48 @@
 import { NextFunction, Request, Response } from "express";
 import { MelodyDataSource } from "../dataSource";
 import { User } from "../entity/User.entity";
-
+import { Payload } from "../dto/user.dto";
 import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 dotenv.config({path: "/.env"});
 
-export const authentification = (
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: Payload; // Replace 'any' with the appropriate type
+    }
+  }
+}
+
+export const authenticate = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const header = req.headers.authorization;
   if (!header) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized1" });
   }
-  const token = header.split(" ")[1];
+  const parts = header.split(" ");
+  if (parts.length !== 2 || parts[0] !== "Bearer") {
+  return res.status(401).json({ message: "Unauthorized" });
+  }
+  const token = parts[1];
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized2" });
   }
   if (!process.env.JWT_SECRET) {
-    return res.status(500).json({ message: "Secret Not Configured" });
+    return res.status(500).json({ message: "Server Error" });
     }
-
-  const decode = jwt.verify(token, process.env.JWT_SECRET);
-  if (!decode) {
+  try{
+    const decode = jwt.verify(token, process.env.JWT_SECRET) as Payload;
+    if (!decode) {
+      return res.status(401).json({ message: "Unauthorized3" });
+    }
+    req.currentUser = decode;
+  } catch (err) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-  req[" currentUser"] = decode;
   next();
 };
 
@@ -37,7 +52,7 @@ export const authorization = (roles: string[]) => {
       const userRepo = MelodyDataSource.getRepository(User);
 
       const user = await userRepo.findOne({
-        where: { id: req[" currentUser"].id },
+        where: { id: req.currentUser!.id },
       });
       console.log(user);
       if (!user) {

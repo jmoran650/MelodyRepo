@@ -1,10 +1,10 @@
-export class UserResponse {
-    name!: string;
-    email!: string;
-    role!: string;
+export interface UserResponse {
+    name: string;
+    email: string;
+    role: string;
   }
   
-export class payload {
-    id!: string;
-    role!: string;
+export interface Payload {
+    id: string;
+    role: string;
   }

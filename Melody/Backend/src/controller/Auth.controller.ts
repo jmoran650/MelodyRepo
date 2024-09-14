@@ -40,7 +40,7 @@ export class AuthController {
 
   static async getProfile(req: AuthenticatedRequest, res: Response) {
     if (!req.currentUser) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Server Error" });
     }
     const userRepository = MelodyDataSource.getRepository(User);
     const user = await userRepository.findOne({

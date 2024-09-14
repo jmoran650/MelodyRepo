@@ -1,20 +1,30 @@
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import * as dotenv from "dotenv";
-import { payload } from "../dto/user.dto";
+import { Payload } from "../dto/user.dto";
 
 dotenv.config();
 
 const { JWT_SECRET = "" } = process.env;
+
 export class encrypt {
+
+  // Encrypt the password asynchronously
   static async encryptpass(password: string) {
-    return bcrypt.hashSync(password, 12);
+    if (!password) {
+      throw new Error("Password is required");
+    }
+    const saltRounds = 12; // You can adjust the salt rounds if needed
+    return await bcrypt.hash(password, saltRounds);
   }
-  static comparepassword(hashPassword: string, password: string) {
+
+  // Compare password with hash
+  static comparepassword(password: string, hashPassword: string) {
     return bcrypt.compareSync(password, hashPassword);
   }
 
-  static generateToken(payload: payload) {
+  // Generate JWT token
+  static generateToken(payload: Payload) {
     return jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
   }
 }

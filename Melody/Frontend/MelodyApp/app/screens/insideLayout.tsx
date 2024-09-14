@@ -11,8 +11,8 @@ export const InsideStack = createNativeStackNavigator();
 const InsideLayout = () => {
     return (
       <InsideStack.Navigator>
-        <InsideStack.Screen name="screens/Home" component={Home} />
-        <InsideStack.Screen name="screens/Profile" component={Profile} />
+        <InsideStack.Screen name="Home" component={Home} />
+        <InsideStack.Screen name="Profile" component={Profile} />
       </InsideStack.Navigator>
     );
   }

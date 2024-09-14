@@ -5,7 +5,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { MelodyDataSource } from "./dataSource";
-
+import router from "./routes/userRoutes";
 
 MelodyDataSource.initialize()
     .then(async () => {
@@ -16,6 +16,7 @@ MelodyDataSource.initialize()
             app.use(cors());
             app.use(express.json());
             app.use(bodyParser.json());
+            app.use(router);
 
             const port = 3000;
             app.listen(port, () => {
