@@ -24,7 +24,7 @@ export const getUsers = async () => {
 };
 
 // Create a new user
-export const createUser = async (user: { id: number; name: string; email: string, password: string }) => {
+export const createUser = async (user: { name: string , email: string, password: string }) => {
     try {
         const response = await fetch(`${API_URL}/signup`, {
             method: 'POST',

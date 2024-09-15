@@ -1,7 +1,8 @@
 import { 
   Entity, 
   PrimaryGeneratedColumn, Column, 
-  CreateDateColumn, UpdateDateColumn
+  CreateDateColumn, UpdateDateColumn,
+  Unique
 }
 from "typeorm";
 
@@ -11,7 +12,7 @@ export class User {
   id!: string;
 
   @Column()
-  name!: string;
+  name?: string;
 
   @Column()
   email!: string;
