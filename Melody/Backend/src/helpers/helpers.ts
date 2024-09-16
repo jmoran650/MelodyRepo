@@ -20,7 +20,7 @@ export class encrypt {
 
   // Compare password with hash
   static comparepassword(password: string, hashPassword: string) {
-    return bcrypt.compareSync(password, hashPassword);
+    return bcrypt.compare(password, hashPassword);
   }
 
   // Generate JWT token

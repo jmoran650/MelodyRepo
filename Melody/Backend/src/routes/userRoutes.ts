@@ -4,7 +4,6 @@ import { AuthController } from '../controller/Auth.controller'; // Adjust path a
 
 const router = express.Router();
 
-// Define the routes and map them to the controller methods
 
 // Route to sign up a new user
 router.post('/signup', UserController.signup);
@@ -22,7 +21,10 @@ router.delete('/users/:id', UserController.deleteUser);
 router.post('/login', AuthController.login);
 
 // Route to get user profile
-router.get('/profile', AuthController.getProfile);
+router.get('/profile', AuthController.getOwnProfile);
+
+// Route to validate token
+router.get('/validateToken', AuthController.validateToken);
 
 
 export default router;

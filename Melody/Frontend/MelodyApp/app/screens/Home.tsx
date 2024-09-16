@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "./authContext";
 import {
   View,
   Text,
@@ -8,9 +9,8 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { signOut } from "firebase/auth";
 import { getUsers, createUser } from "./apiService";
+import { log } from "console";
 
 const styles = StyleSheet.create({
   container: {
@@ -64,10 +64,11 @@ const Home = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
+  const { user, logout } = useContext(AuthContext);
 
   const handleSignOut = async () => {
     try {
-      await signOut(FIREBASE_AUTH);
+      await logout();
       console.log("User signed out!");
     } catch (e) {
       console.error(e);

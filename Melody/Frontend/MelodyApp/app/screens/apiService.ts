@@ -57,7 +57,7 @@ export const logInUser = async (user: { email: string, password: string }) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Error signing in: ${response.statusText}`);
+            throw new Error(`Error signing in: ${response}`);
         }
 
         const data = await response.json();
@@ -68,3 +68,24 @@ export const logInUser = async (user: { email: string, password: string }) => {
         throw error;
     }
 }
+
+export const validateToken = async (token: string) => {
+    try {
+      const response = await fetch(`${API_URL}/validateToken`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const userData = await response.json();
+        return userData;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error validating token:', error);
+      return null;
+    }
+  };

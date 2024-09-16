@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { FIREBASE_AUTH } from "../../firebaseConfig";
+
 import { signOut } from "firebase/auth";
 
 const Profile = () => {
   const handleSignOut = async () => {
     try {
-      await signOut(FIREBASE_AUTH);
+     // await signOut(FIREBASE_AUTH);
       console.log("User signed out!");
     } catch (e) {
       console.error(e);
