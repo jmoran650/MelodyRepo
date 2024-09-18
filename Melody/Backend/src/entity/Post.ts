@@ -3,17 +3,18 @@ import {PostType} from "../types/postType";
 
 @Entity()
 export class Post {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
   @Column({
     type: "enum",
     enum: PostType
   })
-  type!: string;
+  postType!: string;
+
+  @Column("uuid")
+  postUserId!: string;
 
   @Column()
-  userId!: number;
-
-  // other columns...
+  postText!: string;
 }

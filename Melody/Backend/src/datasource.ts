@@ -4,6 +4,7 @@ dotenv.config({path: __dirname + '/.env'});
 
 import { DataSource } from "typeorm"
 import { User } from "./entity/User.entity"
+import { Post } from "./entity/Post"
 
 console.log("DB_USER:", process.env.DB_USER);
 console.log("DB_PASS:", process.env.DB_PASS);
@@ -18,7 +19,7 @@ export const MelodyDataSource = new DataSource({
     database: process.env.DB_DATABASE,
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [User, Post],
 })
 
 

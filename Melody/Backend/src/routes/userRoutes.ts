@@ -1,6 +1,7 @@
 import express from 'express';
 import { UserController } from '../controller/User.controller'; // Adjust path as needed
 import { AuthController } from '../controller/Auth.controller'; // Adjust path as needed
+import { PostController } from '../controller/Post.controller';
 
 const router = express.Router();
 
@@ -25,6 +26,9 @@ router.get('/profile', AuthController.getOwnProfile);
 
 // Route to validate token
 router.get('/validateToken', AuthController.validateToken);
+
+// Route to make a post
+router.put('/makePost', PostController.makePost);
 
 
 export default router;

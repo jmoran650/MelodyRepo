@@ -10,13 +10,12 @@ import {
   TextInput,
 } from "react-native";
 import { getUsers, createUser } from "./apiService";
-import { log } from "console";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 11,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   item: {
     padding: 10,
@@ -110,21 +109,20 @@ const Home = () => {
       <Button title="Sign Out" onPress={handleSignOut} />
       <Button title="Get Users" onPress={fetchUsers} />
       <View style={styles.listContainer}>
-      <Text>This is where the list should be!</Text>
-      <FlatList
-        data={users}
-        style={{ flex: 1 }}
-        keyExtractor={(item) => item.id} // Ensure the ID is unique and a string
-        renderItem={({ item }) => (
-          <View style={styles.userItem}>
-            
-            <Text style={styles.userText}>Name: {item.name}</Text>
-            <Text style={styles.userText}>ID: {item.id}</Text>
-            <Text style={styles.userText}>Email: {item.email}</Text>
-            <Text style={styles.userText}>Password: {item.password}</Text>
-          </View>
-        )}
-      />
+        <Text>This is where the list should be!</Text>
+        <FlatList
+          data={users}
+          style={{ flex: 1 }}
+          keyExtractor={(item) => item.id} // Ensure the ID is unique and a string
+          renderItem={({ item }) => (
+            <View style={styles.userItem}>
+              <Text style={styles.userText}>Name: {item.name}</Text>
+              <Text style={styles.userText}>ID: {item.id}</Text>
+              <Text style={styles.userText}>Email: {item.email}</Text>
+              <Text style={styles.userText}>Password: {item.password}</Text>
+            </View>
+          )}
+        />
       </View>
       <TextInput
         style={styles.input}
