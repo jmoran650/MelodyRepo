@@ -16,6 +16,12 @@ export class UserController {
     user.role = "user";
 
     const userRepository = MelodyDataSource.getRepository(User);
+
+    const userExists = await userRepository.findOne({ where: { email } });
+    if (userExists) {
+      return res.status(409).json({ message: "User already exists" });
+    }
+
     await userRepository.save(user);
     
     

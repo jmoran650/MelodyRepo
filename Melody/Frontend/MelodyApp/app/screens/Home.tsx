@@ -9,7 +9,9 @@ import {
   Alert,
   TextInput,
 } from "react-native";
+import { useNavigation, NavigationProp } from '@react-navigation/native'; // Import useNavigation and NavigationProp
 import { getUsers, createUser } from "./apiService";
+import { RootStackParamList } from "../types/navigation";
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +59,8 @@ type User = {
   password: string;
 };
 
+type HomeScreenNavigationProp = NavigationProp<RootStackParamList, 'Home'>;
+
 const Home = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [name, setName] = useState("");
@@ -64,6 +68,11 @@ const Home = () => {
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
   const { user, logout } = useContext(AuthContext);
+  const navigation = useNavigation<HomeScreenNavigationProp>(); // Use the useNavigation hook
+
+  const navigateToProfile = () => {
+    navigation.navigate('Profile'); // Navigate to the Profile screen
+  };
 
   const handleSignOut = async () => {
     try {
@@ -106,6 +115,9 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text>Welcome to the Home Screen!</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Profile" onPress={navigateToProfile} />
+      </View>
       <Button title="Sign Out" onPress={handleSignOut} />
       <Button title="Get Users" onPress={fetchUsers} />
       <View style={styles.listContainer}>
@@ -152,6 +164,7 @@ const Home = () => {
       <View style={styles.buttonContainer}>
         <Button title="Create User" onPress={handleCreateUser} />
       </View>
+
     </View>
   );
 };

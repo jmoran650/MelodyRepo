@@ -19,8 +19,9 @@ export class encrypt {
   }
 
   // Compare password with hash
-  static comparepassword(password: string, hashPassword: string) {
-    return bcrypt.compare(password, hashPassword);
+  static async comparepassword(password: string, hashPassword: string) {
+    const isPasswordValid = await bcrypt.compare(password, hashPassword);
+    return isPasswordValid;
   }
 
   // Generate JWT token

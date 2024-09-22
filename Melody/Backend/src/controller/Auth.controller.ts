@@ -24,18 +24,24 @@ export class AuthController {
       }
 
       const userRepository = MelodyDataSource.getRepository(User);
+
       const user: User | null = await userRepository.findOne({ where: { email } });
-      const isPasswordValid = encrypt.comparepassword(user!.password, password);
+
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+      console.log('user password from db',user!.password)
+      console.log('password from user',password)
+
+      const isPasswordValid = await encrypt.comparepassword(password, user!.password );
+      console.log('isPasswordValid',isPasswordValid)
       if (!isPasswordValid) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      const token = encrypt.generateToken({ id: user.id, role: user.role });
+      const token = encrypt.generateToken({ id: user.id, role: user.role })
+      
       return res.status(201).json({ message: "Login successful", user, token });
     } catch (error) {
       console.error(error);
