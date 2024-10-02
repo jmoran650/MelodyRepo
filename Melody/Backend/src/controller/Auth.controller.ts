@@ -43,6 +43,7 @@ export class AuthController {
       const token = encrypt.generateToken({ id: user.id, role: user.role })
       
       return res.status(201).json({ message: "Login successful", user, token });
+      
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Internal server error" });

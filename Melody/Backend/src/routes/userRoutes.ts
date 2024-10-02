@@ -28,7 +28,10 @@ router.get('/profile', AuthController.getOwnProfile);
 router.get('/validateToken', AuthController.validateToken);
 
 // Route to make a post
-router.put('/makePost', PostController.makePost);
+router.post('/makePost/:id', PostController.makePost);
+
+// Route to get all posts
+router.get('/posts', PostController.getPosts);
 
 
 export default router;

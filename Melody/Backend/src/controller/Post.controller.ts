@@ -17,20 +17,32 @@ interface AuthenticatedRequest extends Request {
 export class PostController {
 
   static async makePost(req: Request, res: Response) {
-    const { id } = req.params;
-    const { postType, postText } = req.body;
+    const { id } = req.params; // userId in the URL
+    const { postType, postText } = req.body; // postType and postText in the body
+
     const userRepository = MelodyDataSource.getRepository(User);
-    const user = await userRepository.findOne({
-      where: { id },
-    });
+    const user = await userRepository.findOne({ where: { id } });
+
     if (!user) {
       return res.status(404).json({ message: "user not found" });
     }
+
+    const postRepository = MelodyDataSource.getRepository(Post);
     const post = new Post();
     post.postType = postType;
     post.postUserId = id;
     post.postText = postText;
-    await userRepository.save(user);
-    res.status(200).json({ message: "updated", user });
+
+    await postRepository.save(post);
+    res.status(200).json({ message: "Post created", post });
   }
+
+  static async getPosts(req: Request, res: Response) {
+    const postRepository = MelodyDataSource.getRepository(Post);
+    const posts = await postRepository.find();
+    return res.status(200).json({
+      data: posts,
+    });
+  }
+
 }

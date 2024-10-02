@@ -1,0 +1,1 @@
+in auth controller in login method should whole user be returned as well as token? no right?

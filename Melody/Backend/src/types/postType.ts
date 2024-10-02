@@ -1,5 +1,6 @@
 export enum PostType {
-    BLOG = "blog",
-    NEWS = "news",
-    REVIEW = "review"
+    SCENT = "scent",
+    FACE = "face",
+    BODY = "body",
+    SUPPLEMENTS = "supplements",
   }
