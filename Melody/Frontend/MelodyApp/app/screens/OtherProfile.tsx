@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Alert } from "react-native";
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Alert, Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../types/navigation";
 import { getOtherProfile, getPostsByUser, requestFriend } from "./apiService";
 
-type OtherProfileScreenRouteProp = RouteProp<RootStackParamList, 'OtherProfile'>;
+type OtherProfileScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "OtherProfile"
+>;
 
 type Props = {
   route: OtherProfileScreenRouteProp;

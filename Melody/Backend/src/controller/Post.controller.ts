@@ -1,22 +1,18 @@
-
 import { Request, Response } from "express";
 import { MelodyDataSource } from "../dataSource";
 import { Post } from "../entity/Post";
 import { User } from "../entity/User.entity";
-import { encrypt } from "../helpers/helpers";
 //import jwt from 'jsonwebtoken';
 
 interface AuthenticatedRequest extends Request {
-    currentUser?: {
-      id: string;
-      role: string;
-      name: string;
-    };
-  }
-
+  currentUser?: {
+    id: string;
+    role: string;
+    name: string;
+  };
+}
 
 export class PostController {
-
   static async makePost(req: Request, res: Response) {
     const userId = req.currentUser?.id;
     const { postType, postText } = req.body;
@@ -61,9 +57,8 @@ export class PostController {
         data: posts,
       });
     } catch (error) {
-      console.error('Error fetching posts by user:', error);
-      return res.status(500).json({ message: 'Server error' });
+      console.error("Error fetching posts by user:", error);
+      return res.status(500).json({ message: "Server error" });
     }
   }
-
 }

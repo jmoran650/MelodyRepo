@@ -64,6 +64,7 @@ const Home = () => {
     <View style={styles.container}>
       <Text>Welcome to the Home Screen!</Text>
       <Button title="Go to My Profile" onPress={navigateToMyProfile} />
+      <Button title="View Friends" onPress={() => navigation.navigate('FriendsList')} />
       <Button title="Sign Out" onPress={handleSignOut} />
       <FlatList
         data={users}

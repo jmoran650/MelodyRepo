@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { MelodyDataSource } from "../dataSource";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../helpers/helpers";
-import jwt from "jsonwebtoken";
 
 interface AuthenticatedRequest extends Request {
   currentUser?: {
@@ -42,7 +41,7 @@ export class AuthController {
       if (!isPasswordValid) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       const token = encrypt.generateToken({
         id: user.id,
         role: user.role,
@@ -60,7 +59,7 @@ export class AuthController {
     if (req.currentUser) {
       return res.status(200).json(req.currentUser);
     } else {
-      return res.status(401).json({ message: 'Invalid token' });
+      return res.status(401).json({ message: "Invalid token" });
     }
   }
 

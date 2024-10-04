@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import {PostType} from "../types/postType";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { PostType } from "../types/postType";
 
 @Entity()
 export class Post {
@@ -8,7 +8,7 @@ export class Post {
 
   @Column({
     type: "enum",
-    enum: PostType
+    enum: PostType,
   })
   postType!: string;
 

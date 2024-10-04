@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import { 
-  makePost,
-  getPosts,
-  getIdFromLocalStorage,
-  getNameFromLocalStorage
- } from "./apiService";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { getNameFromLocalStorage, getPosts, makePost } from "./apiService";
 
- interface Post {
+interface Post {
   id: string;
   postType: string;
   postText: string;
@@ -26,24 +28,23 @@ const Profile = () => {
   const [selectedType, setSelectedType] = useState(PostType.SCENT);
   const [userName, setUserName] = useState<string>("");
 
-
   useEffect(() => {
     fetchPosts();
     fetchUserName();
   }, []);
-  
-  const fetchUserName  = async () => {
+
+  const fetchUserName = async () => {
     try {
       const name = await getNameFromLocalStorage();
       console.log("Fetched user name:", name); // Check what's being retrieved
-      if(!name){
+      if (!name) {
         throw new Error("User name not found");
       }
       setUserName(name);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const fetchPosts = async () => {
     try {
@@ -65,11 +66,7 @@ const Profile = () => {
 
   const handleMakePost = async () => {
     try {
-      const userID = await getIdFromLocalStorage();
-      if (!userID) {
-        throw new Error("User ID not found");
-      }
-      const post = { postType: selectedType, postText: "Hello, world!", postUserId: userID };
+      const post = { postType: selectedType, postText: "Hello, world!" };
       await makePost(post);
       console.log("Post created!");
       fetchPosts(); // Refresh posts
@@ -107,7 +104,9 @@ const Profile = () => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 24, marginBottom: 16 }}>Your Name Here:{userName}</Text>
+      <Text style={{ fontSize: 24, marginBottom: 16 }}>
+        Your Name Here:{userName}
+      </Text>
       {renderFilterButtons()}
       <FlatList
         data={filteredPosts}
