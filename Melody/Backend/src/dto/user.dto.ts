@@ -7,4 +7,5 @@ export interface UserResponse {
 export interface Payload {
     id: string;
     role: string;
+    name: string;
   }

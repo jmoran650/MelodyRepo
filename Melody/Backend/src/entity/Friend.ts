@@ -1,5 +1,10 @@
 import { Entity, PrimaryColumn, Column } from "typeorm";
-import { statusType } from "../types/friendType";
+
+enum statusType {
+  ACCEPTED = "Accepted",
+  DENIED = "Denied",
+  PENDING = "Pending"
+}
 
 @Entity()
 export class Friend {
@@ -17,3 +22,4 @@ export class Friend {
   status!: statusType;
 
 }
+

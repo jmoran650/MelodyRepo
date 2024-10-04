@@ -16,7 +16,7 @@ export const getUsers = async () => {
         }
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         return data;
     } catch (error) {
         console.error('Fetch error:', error);
@@ -63,7 +63,8 @@ export const logInUser = async (user: { email: string, password: string }) => {
 
         const data = await response.json();
         AsyncStorage.setItem('token', data.token);
-        console.log("returned data from login", data);
+        AsyncStorage.setItem('userName', data.user.name);
+        //console.log("returned data from login", data);
         return data;
     } catch (error) {
         console.error('Fetch error:', error);
@@ -152,3 +153,80 @@ export const getIdFromLocalStorage = async () => {
         return null;
     }
 }
+
+export const getNameFromLocalStorage = async () => {
+    try {
+        const name = await AsyncStorage.getItem('userName');
+        return name;
+    } catch (error) {
+        console.error('Error getting name from local storage:', error);
+        return null;
+    }
+}
+
+export const getPostsByUser = async (userId: string) => {
+    try {
+      const response = await fetch(`${API_URL}/posts/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include authorization header if required
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error fetching posts: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  };
+
+  export const requestFriend = async (receiverId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`${API_URL}/friend/request/${receiverId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error sending friend request: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  };
+
+  export const getOtherProfile = async (userId: string) => {
+    try {
+      const response = await fetch(`${API_URL}/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include authorization header if required
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error fetching profile: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  };

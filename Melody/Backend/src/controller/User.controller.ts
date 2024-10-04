@@ -26,7 +26,7 @@ export class UserController {
     
     
     userRepository.create({ name, email, password });
-    const token = encrypt.generateToken({ id: user.id, role: user.role });
+    const token = encrypt.generateToken({ id: user.id, role: user.role, name: user.name });
 
     return res
       .status(200)

@@ -10,6 +10,7 @@ interface AuthenticatedRequest extends Request {
     currentUser?: {
       id: string;
       role: string;
+      name: string;
     };
   }
 
@@ -43,6 +44,22 @@ export class PostController {
     return res.status(200).json({
       data: posts,
     });
+  }
+
+  static async getPostsByUser(req: Request, res: Response) {
+    const { userId } = req.params;
+    const postRepository = MelodyDataSource.getRepository(Post);
+    try {
+      const posts = await postRepository.find({
+        where: { postUserId: userId },
+      });
+      return res.status(200).json({
+        data: posts,
+      });
+    } catch (error) {
+      console.error('Error fetching posts by user:', error);
+      return res.status(500).json({ message: 'Server error' });
+    }
   }
 
 }

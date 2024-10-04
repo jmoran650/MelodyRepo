@@ -3,7 +3,8 @@ import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet } from "reac
 import { 
   makePost,
   getPosts,
-  getIdFromLocalStorage
+  getIdFromLocalStorage,
+  getNameFromLocalStorage
  } from "./apiService";
 
  interface Post {
@@ -23,10 +24,26 @@ export const PostType = {
 const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedType, setSelectedType] = useState(PostType.SCENT);
+  const [userName, setUserName] = useState<string>("");
+
 
   useEffect(() => {
     fetchPosts();
+    fetchUserName();
   }, []);
+  
+  const fetchUserName  = async () => {
+    try {
+      const name = await getNameFromLocalStorage();
+      console.log("Fetched user name:", name); // Check what's being retrieved
+      if(!name){
+        throw new Error("User name not found");
+      }
+      setUserName(name);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   const fetchPosts = async () => {
     try {
@@ -90,7 +107,7 @@ const Profile = () => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 24, marginBottom: 16 }}>Welcome to the Profile Screen!</Text>
+      <Text style={{ fontSize: 24, marginBottom: 16 }}>Your Name Here:{userName}</Text>
       {renderFilterButtons()}
       <FlatList
         data={filteredPosts}
