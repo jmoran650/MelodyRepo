@@ -4,6 +4,8 @@ import { AuthController } from '../controller/Auth.controller'; // Adjust path a
 import { PostController } from '../controller/Post.controller';
 import { ProfileController } from '../controller/Profile.controller'; // Adjust path as needed
 import { FriendController } from '../controller/Friend.controller'; // Adjust path as needed
+import { authenticate, authorization } from '../middlewares/auth.middleware'; // Adjust the path as needed
+import { Admin } from 'typeorm';
 
 const router = express.Router();
 
@@ -12,40 +14,40 @@ const router = express.Router();
 router.post('/signup', UserController.signup);
 
 // Route to get all users
-router.get('/users', UserController.getUsers);
+router.get('/users', authenticate, UserController.getUsers);
 
 // Route to update a user by ID
-router.put('/users/:id', UserController.updateUser);
+router.put('/users/:id', authenticate, UserController.updateUser);
 
 // Route to delete a user by ID
-router.delete('/users/:id', UserController.deleteUser);
+router.delete('/users/:id', authenticate, UserController.deleteUser);
 
 // Route to login
 router.post('/login', AuthController.login);
 
 // Friend request routes
-router.post('/friend/request/:id', FriendController.requestFriend);
-router.post('/friend/accept/:id', FriendController.acceptFriend);
-router.post('/friend/deny/:id', FriendController.denyFriend);
-router.get('/friends', FriendController.getFriends);
-router.get('/friend/requests',  FriendController.getFriendRequests);
+router.post('/friend/request/:id', authenticate, FriendController.requestFriend);
+router.post('/friend/accept/:id', authenticate,  FriendController.acceptFriend);
+router.post('/friend/deny/:id', authenticate, FriendController.denyFriend);
+router.get('/friends', authenticate, FriendController.getFriends);
+router.get('/friend/requests',  authenticate, FriendController.getFriendRequests);
 
 
 // Route to validate token
-router.get('/validateToken', AuthController.validateToken);
+router.get('/validateToken',authenticate, AuthController.validateToken);
 
 // Route to make a post
-router.post('/makePost/:id', PostController.makePost);
+router.post('/makePost/',authenticate, PostController.makePost);
 
 // Route to get all posts
-router.get('/posts', PostController.getPosts);
+router.get('/posts', authenticate, PostController.getPosts);
 
 // Get own profile
-router.get("/profile", ProfileController.getOwnProfile);
+router.get("/profile", authenticate, ProfileController.getOwnProfile);
 
 // Get other ppl profile
-router.get("/profile/:id", ProfileController.getOtherProfile);
+router.get("/profile/:id", authenticate, ProfileController.getOtherProfile);
 
-router.get('/posts/user/:userId', PostController.getPostsByUser);
+router.get('/posts/user/:userId', authenticate, PostController.getPostsByUser);
 
 export default router;
