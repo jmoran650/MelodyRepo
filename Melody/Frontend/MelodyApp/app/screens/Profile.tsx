@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types/navigation";
 import { getNameFromLocalStorage, getPosts, makePost } from "./apiService";
 
 interface Post {
@@ -22,8 +25,10 @@ export const PostType = {
   BODY: "body",
   SUPPLEMENTS: "supplements",
 };
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Profile">;
 
 const Profile = () => {
+  const navigation = useNavigation<NavigationProp>();
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedType, setSelectedType] = useState(PostType.SCENT);
   const [userName, setUserName] = useState<string>("");
@@ -64,15 +69,8 @@ const Profile = () => {
     }
   };
 
-  const handleMakePost = async () => {
-    try {
-      const post = { postType: selectedType, postText: "Hello, world!" };
-      await makePost(post);
-      console.log("Post created!");
-      fetchPosts(); // Refresh posts
-    } catch (e) {
-      console.error(e);
-    }
+  const handleMakePost = () => {
+    navigation.navigate("PostCreator");
   };
 
   const renderFilterButtons = () => {

@@ -7,3 +7,6 @@ Melody/Backend/.env
 Melody/Backend/src/controller/todo.txt
 Melody/Backend/src/controller/todo.txt
 .gitignore
+Melody/Backend/node_modules/
+node_modules
+node_modules/

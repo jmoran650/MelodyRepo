@@ -3,3 +3,4 @@ in auth controller in login method should whole user be returned as well as toke
 
 - Search people
 - Make post ui
+- figure out token problem

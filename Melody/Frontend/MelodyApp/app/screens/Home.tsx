@@ -8,10 +8,12 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { getUsers } from "./apiService";
 import { RootStackParamList } from "../types/navigation";
+import { searchUsers } from "./apiService";
 
 type User = {
   name: string;
@@ -20,21 +22,24 @@ type User = {
   password: string;
 };
 
-type HomeScreenNavigationProp = NavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = NavigationProp<RootStackParamList, "Home">;
 
 const Home = () => {
   const [users, setUsers] = useState<User[]>([]);
   const { logout } = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   // Function to navigate to another user's profile
   const navigateToProfile = (userId: string) => {
-    navigation.navigate('OtherProfile', { userId });
+    navigation.navigate("OtherProfile", { userId });
   };
 
   // Function to navigate to the current user's own profile
   const navigateToMyProfile = () => {
-    navigation.navigate('Profile'); // Assuming 'Profile' is the name of your own profile screen
+    navigation.navigate("Profile"); // Assuming 'Profile' is the name of your own profile screen
   };
 
   const handleSignOut = async () => {
@@ -56,16 +61,72 @@ const Home = () => {
     }
   };
 
+  const handleSearch = async (text: string) => {
+    setSearchTerm(text);
+  
+    if (text.length === 0) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+  
+    try {
+      const response = await searchUsers(text);
+      setSearchResults(response.data);
+      setShowSearchResults(true);
+    } catch (error) {
+      console.error("Error searching users:", error);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
 
   return (
     <View style={styles.container}>
       <Text>Welcome to the Home Screen!</Text>
       <Button title="Go to My Profile" onPress={navigateToMyProfile} />
-      <Button title="View Friends" onPress={() => navigation.navigate('FriendsList')} />
+      <Button
+        title="View Friends"
+        onPress={() => navigation.navigate("FriendsList")}
+      />
       <Button title="Sign Out" onPress={handleSignOut} />
+      <TextInput
+      style={styles.searchInput}
+      placeholder="Search users..."
+      value={searchTerm}
+      onChangeText={handleSearch}
+    />
+
+    {showSearchResults && (
+      <View style={styles.searchResultsContainer}>
+        {searchResults.slice(0, 8).map((user) => (
+          <TouchableOpacity
+            key={user.id}
+            onPress={() => {
+              navigateToProfile(user.id);
+              setShowSearchResults(false);
+              setSearchTerm("");
+            }}
+          >
+            <Text style={styles.searchResultItem}>{user.name}</Text>
+          </TouchableOpacity>
+        ))}
+        {searchResults.length > 8 && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("SearchResults", { searchTerm });
+              setShowSearchResults(false);
+              setSearchTerm("");
+            }}
+          >
+            <Text style={styles.moreText}>More...</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    )}
       <FlatList
         data={users}
         style={{ flex: 1 }}
@@ -97,5 +158,27 @@ const styles = StyleSheet.create({
   },
   userText: {
     fontSize: 16,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    marginVertical: 16,
+  },
+  searchResultsContainer: {
+    backgroundColor: "#fff",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    maxHeight: 200,
+  },
+  searchResultItem: {
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  moreText: {
+    padding: 8,
+    color: "blue",
   },
 });

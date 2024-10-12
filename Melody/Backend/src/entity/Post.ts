@@ -15,6 +15,6 @@ export class Post {
   @Column("uuid")
   postUserId!: string;
 
-  @Column()
-  postText!: string;
+  @Column({ type: "jsonb", nullable: true })
+  data?: any; // Use appropriate typing if you have a defined interface
 }

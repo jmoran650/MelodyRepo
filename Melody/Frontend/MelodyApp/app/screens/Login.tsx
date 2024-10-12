@@ -26,7 +26,7 @@ const Login = () => {
     setError("");
     try {
       const signInResponse = await logInUser({ email, password });
-      console.log("Signed in:", signInResponse);
+      //console.log("Signed in:", signInResponse);
       const token = signInResponse.token;
       if (token) {
         await login(token); // Use login function from AuthContext
@@ -49,7 +49,7 @@ const Login = () => {
         email,
         password,
       });
-      console.log("Signed up:", signUpResponse);
+      //console.log("Signed up:", signUpResponse);
       // Optionally, automatically sign in the user after signup
       if (signUpResponse.token) {
         await login(signUpResponse.token);

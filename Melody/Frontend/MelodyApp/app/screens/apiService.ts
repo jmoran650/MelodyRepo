@@ -107,36 +107,36 @@ export const validateToken = async (token: string) => {
 
 // Make a post (Updated to remove userId and include Authorization header)
 export const makePost = async (post: {
-  postType: string;
-  postText: string;
-}) => {
-  try {
-    const token = await AsyncStorage.getItem("token");
-    if (!token) {
-      throw new Error("User is not authenticated");
+    postType: string;
+    postText: string;
+    data?: any;
+  }) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+  
+      const response = await fetch(`${API_URL}/makePost`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(post),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error creating post: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error;
     }
-
-    const response = await fetch(`${API_URL}/makePost`, {
-      // Updated endpoint
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(post),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error creating post: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    throw error;
-  }
-};
+  };
 
 // Get all posts (Include Authorization header)
 export const getPosts = async () => {
@@ -394,6 +394,36 @@ export const denyFriendRequest = async (requesterId: string) => {
     console.error("Fetch error:", error);
     throw error;
   }
+
+  
 };
 
-// Additional functions can be added here (e.g., acceptFriendRequest, denyFriendRequest)
+export const searchUsers = async (searchTerm: string, page: number = 1, pageSize: number = 8) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+  
+      const response = await fetch(
+        `${API_URL}/search/users?q=${encodeURIComponent(searchTerm)}&page=${page}&pageSize=${pageSize}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Error searching users: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data; // Contains data, total, page, pageSize
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error;
+    }
+  };

@@ -50,4 +50,7 @@ router.get("/profile/:id", authenticate, ProfileController.getOtherProfile);
 
 router.get('/posts/user/:userId', authenticate, PostController.getPostsByUser);
 
+//user Search
+router.get('/search/users', authenticate, UserController.searchUsers);
+
 export default router;

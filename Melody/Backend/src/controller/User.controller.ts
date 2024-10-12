@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { MelodyDataSource } from "../dataSource";
 import { User } from "../entity/User.entity";
 import { encrypt } from "../helpers/helpers";
+import { ILike } from "typeorm";
 import * as cache from "memory-cache";
 
 export class UserController {
@@ -78,5 +79,42 @@ export class UserController {
     }
     await userRepository.remove(user);
     res.status(200).json({ message: "user deleted" });
+  }
+
+  static async searchUsers(req: Request, res: Response) {
+    const { query } = req;
+    const searchTerm = query.q || '';
+    const page = parseInt(query.page as string, 10) || 1;
+    const pageSize = parseInt(query.pageSize as string, 10) || 8;
+
+    try {
+      const userRepository = MelodyDataSource.getRepository(User);
+
+      const [users, total] = await userRepository.findAndCount({
+        where: [
+          { name: ILike(`%${searchTerm}%`) },
+          { email: ILike(`%${searchTerm}%`) },
+        ],
+        order: {
+          name: "ASC",
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      });
+
+      return res.status(200).json({
+        data: users.map(user => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        })),
+        total,
+        page,
+        pageSize,
+      });
+    } catch (error) {
+      console.error('Error searching users:', error);
+      return res.status(500).json({ message: 'Server error' });
+    }
   }
 }

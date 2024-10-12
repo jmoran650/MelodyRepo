@@ -4,5 +4,7 @@ export type RootStackParamList = {
   Profile: undefined;
   OtherProfile: { userId: string };
   FriendsList: undefined;
+  SearchResults: { searchTerm: string };
+  PostCreator: undefined;
   // Add other screens and their parameters here
 };
