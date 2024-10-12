@@ -8,5 +8,6 @@ Melody/Backend/src/controller/todo.txt
 Melody/Backend/src/controller/todo.txt
 .gitignore
 Melody/Backend/node_modules/
+Melody/Backend/dist
 node_modules
 node_modules/
