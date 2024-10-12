@@ -5,3 +5,5 @@ Melody/Backend/.env
 .env
 .gitignore
 Melody/Backend/src/controller/todo.txt
+Melody/Backend/src/controller/todo.txt
+.gitignore
