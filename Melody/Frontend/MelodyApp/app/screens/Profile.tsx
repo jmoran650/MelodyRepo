@@ -1,3 +1,5 @@
+// Profile.tsx
+
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -6,31 +8,38 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
-import { getNameFromLocalStorage, getPosts, makePost } from "./apiService";
+import { getNameFromLocalStorage, getPosts } from "./apiService";
 
 interface Post {
   id: string;
   postType: string;
   postText: string;
   postUserId: string;
+  data?: {
+    productName?: string;
+    companyName?: string;
+    tags?: string[];
+  };
 }
 
-export const PostType = {
-  SCENT: "scent",
-  FACE: "face",
-  BODY: "body",
-  SUPPLEMENTS: "supplements",
-};
+export enum PostType {
+  SCENT = "scent",
+  FACE = "face",
+  BODY = "body",
+  SUPPLEMENTS = "supplements",
+}
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Profile">;
 
 const Profile = () => {
   const navigation = useNavigation<NavigationProp>();
   const [posts, setPosts] = useState<Post[]>([]);
-  const [selectedType, setSelectedType] = useState(PostType.SCENT);
+  const [selectedType, setSelectedType] = useState<PostType>(PostType.SCENT);
   const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
@@ -41,7 +50,6 @@ const Profile = () => {
   const fetchUserName = async () => {
     try {
       const name = await getNameFromLocalStorage();
-      console.log("Fetched user name:", name); // Check what's being retrieved
       if (!name) {
         throw new Error("User name not found");
       }
@@ -62,7 +70,7 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     try {
-      // await signOut(FIREBASE_AUTH);
+      // Implement sign-out logic here
       console.log("User signed out!");
     } catch (e) {
       console.error(e);
@@ -95,15 +103,31 @@ const Profile = () => {
   const filteredPosts = posts.filter((post) => post.postType === selectedType);
 
   const renderPostItem = ({ item }: { item: Post }) => (
-    <View style={styles.postItem}>
-      <Text>{item.postText}</Text>
+    <View style={styles.postTile}>
+      {/* Placeholder for image */}
+      <View style={styles.imagePlaceholder}>
+        <Text style={styles.imagePlaceholderText}>Image</Text>
+      </View>
+      {/* Post details */}
+      <View style={styles.postDetails}>
+        <Text style={styles.postType}>{item.postType.toUpperCase()}</Text>
+        {item.data?.productName && (
+          <Text style={styles.postDetail}>Product: {item.data.productName}</Text>
+        )}
+        {item.data?.companyName && (
+          <Text style={styles.postDetail}>Company: {item.data.companyName}</Text>
+        )}
+        <Text numberOfLines={2} style={styles.postText}>
+          {item.postText}
+        </Text>
+      </View>
     </View>
   );
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text style={{ fontSize: 24, marginBottom: 16 }}>
-        Your Name Here:{userName}
+        {userName}'s Profile
       </Text>
       {renderFilterButtons()}
       <FlatList
@@ -111,12 +135,15 @@ const Profile = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderPostItem}
         contentContainerStyle={{ paddingVertical: 16 }}
+        numColumns={2}
       />
       <Button title="Make Post" onPress={handleMakePost} />
       <Button title="Sign Out" onPress={handleSignOut} />
     </View>
   );
 };
+
+export default Profile;
 
 const styles = StyleSheet.create({
   filterContainer: {
@@ -135,11 +162,42 @@ const styles = StyleSheet.create({
   filterButtonText: {
     fontSize: 16,
   },
-  postItem: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+  postTile: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    overflow: "hidden",
+    elevation: 2, // For Android shadow
+    shadowColor: "#000", // For iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  imagePlaceholder: {
+    height: 100,
+    backgroundColor: "#ddd",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imagePlaceholderText: {
+    color: "#888",
+  },
+  postDetails: {
+    padding: 8,
+  },
+  postType: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  postDetail: {
+    fontSize: 12,
+    color: "#555",
+    marginBottom: 2,
+  },
+  postText: {
+    fontSize: 12,
+    color: "#333",
   },
 });
-
-export default Profile;
