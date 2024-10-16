@@ -2,5 +2,10 @@ in auth controller in login method should whole user be returned as well as toke
 
 
 - Search people
+    - fuzzy search needed
 - Make post ui
+    -pictures
+- Make posts clickable
+- Make posts deletable
 - figure out token problem
+    - hasnt appeared again yet, so low priority
