@@ -14,25 +14,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import { getNameFromLocalStorage, getPosts } from "./apiService";
+import { Post, PostType } from "../types/postType";
 
-interface Post {
-  id: string;
-  postType: string;
-  postText: string;
-  postUserId: string;
-  data?: {
-    productName?: string;
-    companyName?: string;
-    tags?: string[];
-  };
-}
-
-export enum PostType {
-  SCENT = "scent",
-  FACE = "face",
-  BODY = "body",
-  SUPPLEMENTS = "supplements",
-}
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Profile">;
 
@@ -104,10 +87,14 @@ const Profile = () => {
 
   const renderPostItem = ({ item }: { item: Post }) => (
     <View style={styles.postTile}>
-      {/* Placeholder for image */}
-      <View style={styles.imagePlaceholder}>
-        <Text style={styles.imagePlaceholderText}>Image</Text>
-      </View>
+      {/* Display image if available */}
+      {item.data?.imageUrl ? (
+        <Image source={{ uri: item.data.imageUrl }} style={styles.imagePlaceholder} />
+      ) : (
+        <View style={styles.imagePlaceholder}>
+          <Text style={styles.imagePlaceholderText}>No Image</Text>
+        </View>
+      )}
       {/* Post details */}
       <View style={styles.postDetails}>
         <Text style={styles.postType}>{item.postType.toUpperCase()}</Text>

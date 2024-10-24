@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+export const API_URL = "http://localhost:3000";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Fetch all users
