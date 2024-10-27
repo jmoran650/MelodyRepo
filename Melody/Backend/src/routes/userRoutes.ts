@@ -5,6 +5,7 @@ import { PostController } from '../controller/Post.controller';
 import { ProfileController } from '../controller/Profile.controller'; // Adjust path as needed
 import { FriendController } from '../controller/Friend.controller'; // Adjust path as needed
 import { authenticate, authorization } from '../middlewares/auth.middleware'; // Adjust the path as needed
+import { generateUploadURL } from '../controller/s3.controller'; // Adjust the path as needed
 import { Admin } from 'typeorm';
 
 const router = express.Router();
@@ -52,5 +53,7 @@ router.get('/posts/user/:userId', authenticate, PostController.getPostsByUser);
 
 //user Search
 router.get('/search/users', authenticate, UserController.searchUsers);
+
+router.post("/generate-upload-url", authenticate, generateUploadURL);
 
 export default router;

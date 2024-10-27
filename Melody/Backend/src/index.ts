@@ -11,7 +11,6 @@ MelodyDataSource.initialize()
     .then(async () => {
         console.log("Data Source has been initialized!");
         try {
-
             const app = express();
             app.use(cors());
             app.use(express.json());

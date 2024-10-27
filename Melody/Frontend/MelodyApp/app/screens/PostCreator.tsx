@@ -51,7 +51,8 @@ const PostCreator = () => {
       let imageUrl = null;
       if (imageUri) {
         // Upload image to S3 and get the URL
-        //imageUrl = await uploadImageToS3(imageUri);
+        imageUrl = await uploadImageToS3(imageUri);
+        console.log("Image URL after upload:", imageUrl);
       }
 
       const postData = {

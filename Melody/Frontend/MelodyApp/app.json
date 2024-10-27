@@ -15,7 +15,12 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.MelodyApp"
+      "bundleIdentifier": "com.anonymous.MelodyApp",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow MelodyApp to access your photos to let you select images to upload.",
+        "NSCameraUsageDescription": "Allow MelodyApp to access your camera to take photos.",
+        "NSMicrophoneUsageDescription": "Allow MelodyApp to access your microphone."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -36,16 +41,16 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
+          "cameraPermission": "Allow Melody to access your camera",
+          "microphonePermission": "Allow Melody to access your microphone"
           //"recordAudioAndroid": true
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos",
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+          "photosPermission": "Allow Melody to access your photos",
+          "cameraPermission": "Allow Melody to access your camera"
         }
       ],
       "expo-router",
