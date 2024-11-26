@@ -10,6 +10,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Image, // Import Image component
 } from "react-native";
 import { RootStackParamList } from "../types/navigation";
 import { getOtherProfile, getPostsByUser, requestFriend } from "./apiService";
@@ -38,6 +39,7 @@ type Post = {
     productName?: string;
     companyName?: string;
     tags?: string[];
+    imageUrl?: string; // Ensure imageUrl is included
   };
 };
 
@@ -129,10 +131,16 @@ const OtherProfile: React.FC<Props> = ({ route }) => {
 
   const renderPostItem = ({ item }: { item: Post }) => (
     <View style={styles.postTile}>
-      {/* Placeholder for image */}
-      <View style={styles.imagePlaceholder}>
-        <Text style={styles.imagePlaceholderText}>Image</Text>
-      </View>
+      {item.data?.imageUrl ? (
+        <Image
+          source={{ uri: item.data.imageUrl }}
+          style={styles.postImage}
+        />
+      ) : (
+        <View style={styles.imagePlaceholder}>
+          <Text style={styles.imagePlaceholderText}>No Image</Text>
+        </View>
+      )}
       {/* Post details */}
       <View style={styles.postDetails}>
         <Text style={styles.postType}>{item.postType.toUpperCase()}</Text>
@@ -209,6 +217,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+  },
+  postImage: {
+    height: 100,
+    width: "100%",
+    resizeMode: "cover",
   },
   imagePlaceholder: {
     height: 100,
