@@ -6,6 +6,7 @@ in auth controller in login method should whole user be returned as well as toke
 - Make post ui
     -pictures
 - Make posts clickable
-- Make posts deletable
+- Make posts deletable with button
+
 - figure out token problem
-    - hasnt appeared again yet, so low priority
+    - sike it appeared again make sure all localstorage is cleared on log out

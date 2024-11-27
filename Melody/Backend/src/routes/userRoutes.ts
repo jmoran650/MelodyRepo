@@ -51,6 +51,8 @@ router.get("/profile/:id", authenticate, ProfileController.getOtherProfile);
 
 router.get('/posts/user/:userId', authenticate, PostController.getPostsByUser);
 
+router.post()
+
 //user Search
 router.get('/search/users', authenticate, UserController.searchUsers);
 
