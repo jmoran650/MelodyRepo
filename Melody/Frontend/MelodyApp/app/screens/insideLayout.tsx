@@ -1,5 +1,5 @@
+//insideLayout.tsx
 import React from "react";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import FriendsList from "./friendsList"; // Create a FriendsList screen to navigate to after login
@@ -8,6 +8,7 @@ import OtherProfile from "./OtherProfile"; // Create an OtherProfile screen to n
 import Profile from "./Profile"; // Create a Profile screen to navigate to after login
 import SearchResults from "./SearchResultScreen"; // Create a SearchResults screen to navigate to after login
 import PostCreator from "./PostCreator";
+import Login from "./Login";
 export const InsideStack = createNativeStackNavigator<RootStackParamList>();
 
 const InsideLayout = () => {
@@ -19,6 +20,7 @@ const InsideLayout = () => {
       <InsideStack.Screen name="FriendsList" component={FriendsList} />
       <InsideStack.Screen name="SearchResults" component={SearchResults} />
       <InsideStack.Screen name="PostCreator" component={PostCreator} />
+      <InsideStack.Screen name="Login" component={Login} />
     </InsideStack.Navigator>
   );
 };

@@ -1,6 +1,7 @@
 export const API_URL = "http://localhost:3000";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 // Fetch all users
 export const getUsers = async () => {
   try {
@@ -58,6 +59,7 @@ export const createUser = async (user: {
 };
 
 // User login (No changes needed here)
+
 export const logInUser = async (user: { email: string; password: string }) => {
   try {
     const response = await fetch(`${API_URL}/login`, {
@@ -73,9 +75,9 @@ export const logInUser = async (user: { email: string; password: string }) => {
     }
 
     const data = await response.json();
-    await AsyncStorage.setItem("token", data.token);
-    await AsyncStorage.setItem("userName", data.user.name);
-    //console.log("returned data from login", data);
+
+    // Do not import or use AuthContext here
+    // Return data to the component
     return data;
   } catch (error) {
     console.error("Fetch error:", error);
@@ -194,6 +196,7 @@ export const getNameFromLocalStorage = async () => {
 };
 
 // Get posts by user (Include Authorization header)
+
 export const getPostsByUser = async (userId: string) => {
   try {
     const token = await AsyncStorage.getItem("token");
@@ -205,7 +208,7 @@ export const getPostsByUser = async (userId: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Include authorization header
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -214,12 +217,13 @@ export const getPostsByUser = async (userId: string) => {
     }
 
     const data = await response.json();
-    return data;
+    return data; // Should contain { data: posts }
   } catch (error) {
     console.error("Fetch error:", error);
     throw error;
   }
 };
+
 
 // Request friend (No changes needed here)
 export const requestFriend = async (receiverId: string) => {
@@ -426,4 +430,41 @@ export const searchUsers = async (searchTerm: string, page: number = 1, pageSize
       console.error("Fetch error:", error);
       throw error;
     }
+
+    
+
   };
+
+
+  export const deletePost = async (postId: string) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+  
+      const response = await fetch(`${API_URL}/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      console.log('Response status:', response.status);
+      const responseText = await response.text();
+      console.log('Response body:', responseText);
+  
+      if (!response.ok) {
+        const errorMessage = response.statusText;
+        throw new Error(`Error deleting post: ${errorMessage}`);
+      }
+  
+      const data = JSON.parse(responseText);
+      return data;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error;
+    }
+  };
+

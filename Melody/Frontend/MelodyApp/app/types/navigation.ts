@@ -6,5 +6,6 @@ export type RootStackParamList = {
   FriendsList: undefined;
   SearchResults: { searchTerm: string };
   PostCreator: undefined;
+  Login: undefined;
   // Add other screens and their parameters here
 };

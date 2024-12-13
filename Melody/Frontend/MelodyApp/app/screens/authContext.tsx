@@ -1,15 +1,23 @@
 // AuthContext.tsx
-import React, { createContext, useState, useEffect, ReactNode} from 'react';
-import { validateToken } from './apiService';
+
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { validateToken } from './apiService'; // This is acceptable
 import { getToken, setToken, removeToken } from '../utils/tokenStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  // Add other user properties if needed
+}
 
 interface AuthContextProps {
-  user: any;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
 }
-
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,
@@ -22,8 +30,8 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-  const [user, setUser] = useState<any>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -34,6 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
           setUser(userData);
         } else {
           await removeToken();
+          setUser(null);
         }
       }
     };
@@ -43,16 +52,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const login = async (token: string) => {
     await setToken(token);
     const userData = await validateToken(token);
-    setUser(userData);
+    if (userData) {
+      setUser(userData);
+      await AsyncStorage.setItem('userName', userData.name);
+    }
   };
 
   const logout = async () => {
     await removeToken();
+    await AsyncStorage.removeItem('userName');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={ {user, setUser, login, logout} }>
+    <AuthContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

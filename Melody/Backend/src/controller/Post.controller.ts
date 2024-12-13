@@ -76,4 +76,34 @@ export class PostController {
       return res.status(500).json({ message: "Server error" });
     }
   }
+  
+
+  static async deletePost(req: AuthenticatedRequest, res: Response) {
+    try {
+      const userId = req.currentUser?.id;
+      const postId = req.params.id;
+
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const postRepository = MelodyDataSource.getRepository(Post);
+      const post = await postRepository.findOneBy({ id: postId });
+
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+
+      if (post.postUserId !== userId) {
+        return res.status(403).json({ message: "You can only delete your own posts" });
+      }
+
+      await postRepository.delete(postId);
+      return res.status(200).json({ message: "Post deleted" });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
 }
