@@ -30,8 +30,7 @@ export class AuthController {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      console.log("user password from db", user!.password);
-      console.log("password from user", password);
+
 
       const isPasswordValid = await encrypt.comparepassword(
         password,

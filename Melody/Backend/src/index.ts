@@ -1,6 +1,4 @@
-
-
-
+//Backend/index.ts
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -21,10 +19,10 @@ MelodyDataSource.initialize()
             app.listen(port, () => {
                 console.log(`Server running on port ${port}`);
             });
-
-
+            
         } catch (error) {
             console.error("Error during database operations:", error);
         }
     })
     .catch((error) => console.log(error))
+
