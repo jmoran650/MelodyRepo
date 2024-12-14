@@ -58,4 +58,6 @@ router.get('/search/users', authenticate, UserController.searchUsers);
 
 router.post("/generate-upload-url", authenticate, generateUploadURL);
 
+//refresh token
+router.post("/refresh", AuthController.refresh);
 export default router;

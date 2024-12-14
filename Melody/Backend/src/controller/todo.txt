@@ -10,6 +10,7 @@ in auth controller in login method should whole user be returned as well as toke
 
 - figure out token problem
     - sike it appeared again make sure all localstorage is cleared on log out
+    WE'RE USING SECURE STORE, DOES NOT WORK ON WEB!!!!!!
 
 
 YOU CAN ONLY DELETE YOUR OWN POSTS ERROR

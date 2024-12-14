@@ -26,10 +26,9 @@ const Login = () => {
     setError("");
     try {
       const signInResponse = await logInUser({ email, password });
-      //console.log("Signed in:", signInResponse);
-      const token = signInResponse.token;
-      if (token) {
-        await login(token); // Use login function from AuthContext
+      const { token, refreshToken } = signInResponse;
+      if (token && refreshToken) {
+        await login(token, refreshToken); // now login expects both
       } else {
         setError("Invalid credentials");
       }
@@ -39,7 +38,7 @@ const Login = () => {
     }
     setLoading(false);
   };
-
+  
   const handleSignUp = async () => {
     setLoading(true);
     setError("");
@@ -49,12 +48,11 @@ const Login = () => {
         email,
         password,
       });
-      //console.log("Signed up:", signUpResponse);
-      // Optionally, automatically sign in the user after signup
-      if (signUpResponse.token) {
-        await login(signUpResponse.token);
+      const { token, refreshToken } = signUpResponse;
+      if (token && refreshToken) {
+        await login(token, refreshToken);
       } else {
-        setIsSignupMode(false); // Switch back to login mode after successful signup
+        setIsSignupMode(false);
       }
     } catch (e: any) {
       setError(e.message || "Signup failed");

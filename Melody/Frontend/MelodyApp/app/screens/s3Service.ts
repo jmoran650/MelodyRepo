@@ -1,7 +1,7 @@
 // s3Service.ts
-
+// s3Service.ts
+import { API_URL, fetchWithAuth } from "./apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "./apiService";
 import * as FileSystem from "expo-file-system";
 
 export const uploadImageToS3 = async (imageUri: string): Promise<string> => {
@@ -11,8 +11,7 @@ export const uploadImageToS3 = async (imageUri: string): Promise<string> => {
       throw new Error('User is not authenticated');
     }
 
-    // Get MIME type
-    let mimeType = 'image/jpeg'; // Default to JPEG
+    let mimeType = 'image/jpeg';
     if (imageUri.endsWith('.png')) {
       mimeType = 'image/png';
     }
@@ -20,21 +19,14 @@ export const uploadImageToS3 = async (imageUri: string): Promise<string> => {
     console.log('Image URI:', imageUri);
     console.log('MIME Type:', mimeType);
 
-    // Request a pre-signed URL from the backend
-    const response = await fetch(`${API_URL}/generate-upload-url`, {
+    // Use fetchWithAuth here instead of fetch
+    const { uploadURL, key } = await fetchWithAuth(`${API_URL}/generate-upload-url`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ fileType: mimeType }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to get upload URL');
-    }
-
-    const { uploadURL, key } = await response.json();
+    }, 'Failed to get upload URL');
 
     console.log('Received uploadURL:', uploadURL);
     console.log('Received key:', key);
@@ -44,7 +36,7 @@ export const uploadImageToS3 = async (imageUri: string): Promise<string> => {
       httpMethod: 'PUT',
       uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
       headers: {
-        'Content-Type': mimeType,    // Must match ContentType in pre-signed URL
+        'Content-Type': mimeType,
       },
     });
 
@@ -54,7 +46,6 @@ export const uploadImageToS3 = async (imageUri: string): Promise<string> => {
       throw new Error(`Failed to upload image to S3. Status code: ${uploadResponse.status}`);
     }
 
-    // Return the image URL
     const imageUrl = `https://melodyimagebucket.s3.amazonaws.com/${key}`;
     console.log('Final Image URL:', imageUrl);
     return imageUrl;
