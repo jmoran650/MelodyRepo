@@ -38,7 +38,7 @@ router.get('/friend/requests',  authenticate, FriendController.getFriendRequests
 router.get('/validateToken',authenticate, AuthController.validateToken);
 
 // Route to make a post
-router.post('/makePost/',authenticate, PostController.makePost);
+router.post('/makePost/', authenticate, PostController.makePost);
 
 // Route to get all posts
 router.get('/posts', authenticate, PostController.getPosts);

@@ -17,6 +17,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 export class PostController {
+  
   static async makePost(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.currentUser?.id;

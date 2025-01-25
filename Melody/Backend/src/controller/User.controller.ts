@@ -9,7 +9,9 @@ export class UserController {
 
   static async signup(req: Request, res: Response) {
     const { name, email, password} = req.body;
+
     const encryptedPassword = await encrypt.encryptpass(password);
+    
     const user = new User();
     user.name = name;
     user.email = email;
@@ -33,6 +35,7 @@ export class UserController {
       .status(200)
       .json({ message: "User created successfully", token, user });
   }
+
   static async getUsers(req: Request, res: Response) {
     const data = cache.get("data");
     if (data) {
